@@ -20,17 +20,16 @@ import static org.junit.Assert.assertEquals;
 public class MinPathTest {
 
     private void assertMinPath(String graph,
-                               Integer length, String path) {
+                               int length, String path) {
         Result actual;
         {
             PathFinder pf = makePathFinder(graph);
             pf.findPath("A", "Z");
             actual = pf.getResult();
         }
-        if (length != null)
-            assertEquals((int) length, actual.length);
-        if (path != null)
-            assertEquals(path, actual.path);
+
+        assertEquals((int) length, actual.length);
+        assertEquals(path, actual.path);
     }
 
     private PathFinder makePathFinder(String graph) {
