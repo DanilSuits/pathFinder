@@ -26,8 +26,7 @@ public class MinPathTest {
         Result actual;
         {
             PathFinder pf = makePathFinder(graph);
-            pf.findPath("A", "Z");
-            actual = pf.getResult();
+            actual = pf.findPath("A", "Z");
         }
 
         assertEquals(expected.length, actual.length);
@@ -108,7 +107,7 @@ class PathFinder {
     private Map<String, Node> nodes = new HashMap<>();
     private Node endNode;
 
-    public void findPath(String begin, String end) {
+    public Result findPath(String begin, String end) {
         List<String> unvisited = initializeSearch(begin, end);
 
         for (String node = begin;
@@ -119,9 +118,7 @@ class PathFinder {
         }
 
         setupEndNode(end);
-    }
 
-    public Result getResult() {
         return new Result(getLength()
                 , getPath().toString());
     }
