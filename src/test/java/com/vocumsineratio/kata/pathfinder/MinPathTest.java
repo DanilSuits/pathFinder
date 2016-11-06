@@ -24,9 +24,7 @@ public class MinPathTest {
         Result actual;
         {
             PathFinder pf = makePathFinder(graph);
-            actual = new Result();
-            actual.length = pf.getLength();
-            actual.path = pf.getPath().toString();
+            actual = pf.getResult();
         }
         if (length != null)
             assertEquals((int) length, actual.length);
@@ -114,6 +112,14 @@ class PathFinder {
         }
 
         setupEndNode(end);
+    }
+
+    public Result getResult() {
+        Result result = new Result();
+        result.length = getLength();
+        result.path = getPath().toString();
+
+        return result;
     }
 
     private List<String> initializeSearch(String begin,
