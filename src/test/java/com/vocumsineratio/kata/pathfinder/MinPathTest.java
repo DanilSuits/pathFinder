@@ -31,7 +31,7 @@ public class MinPathTest {
         if (length != null)
             assertEquals((int) length, actual.length);
         if (path != null)
-            assertEquals(path, actual.length);
+            assertEquals(path, actual.path);
     }
 
     private PathFinder makePathFinder(String graph) {
