@@ -21,6 +21,8 @@ public class MinPathTest {
 
     private void assertMinPath(String graph,
                                int length, String path) {
+        Result expected = new Result(length, path);
+
         Result actual;
         {
             PathFinder pf = makePathFinder(graph);
@@ -28,8 +30,8 @@ public class MinPathTest {
             actual = pf.getResult();
         }
 
-        assertEquals((int) length, actual.length);
-        assertEquals(path, actual.path);
+        assertEquals(expected.length, actual.length);
+        assertEquals(expected.path, actual.path);
     }
 
     private PathFinder makePathFinder(String graph) {
@@ -91,9 +93,15 @@ public class MinPathTest {
     }
 }
 class Result {
-    int length;
-    String path;
+    public final int length;
+    public final String path;
+
+    Result(int length, String path) {
+        this.length = length;
+        this.path = path;
+    }
 }
+
 class PathFinder {
     private List<Edge> edges = new ArrayList<>();
     private Set<String> nodeNames = new HashSet<>();
@@ -114,11 +122,8 @@ class PathFinder {
     }
 
     public Result getResult() {
-        Result result = new Result();
-        result.length = getLength();
-        result.path = getPath().toString();
-
-        return result;
+        return new Result(getLength()
+                , getPath().toString());
     }
 
     private List<String> initializeSearch(String begin,
