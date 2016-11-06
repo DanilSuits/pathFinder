@@ -34,7 +34,7 @@ public class MinPathTest {
     }
 
     private PathFinder makePathFinder(String graph) {
-        PathFinder pf = new PathFinder();
+        LegacyPathFinder pf = new LegacyPathFinder();
         Pattern edgePattern =
                 Pattern.compile("(\\D+)(\\d+)(\\D+)");
         String[] edges = graph.split(",");
@@ -101,7 +101,10 @@ class Result {
     }
 }
 
-class PathFinder {
+interface PathFinder {
+    Result findPath(String begin, String end);
+}
+class LegacyPathFinder implements PathFinder {
     private List<Edge> edges = new ArrayList<>();
     private Set<String> nodeNames = new HashSet<>();
     private Map<String, Node> nodes = new HashMap<>();
