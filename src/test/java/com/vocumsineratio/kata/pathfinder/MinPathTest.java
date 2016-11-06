@@ -21,11 +21,17 @@ public class MinPathTest {
 
     private void assertMinPath(String graph,
                                Integer length, String path) {
-        PathFinder pf = makePathFinder(graph);
+        Result actual;
+        {
+            PathFinder pf = makePathFinder(graph);
+            actual = new Result();
+            actual.length = pf.getLength();
+            actual.path = pf.getPath().toString();
+        }
         if (length != null)
-            assertEquals((int) length, pf.getLength());
+            assertEquals((int) length, actual.length);
         if (path != null)
-            assertEquals(path, pf.getPath().toString());
+            assertEquals(path, actual.length);
     }
 
     private PathFinder makePathFinder(String graph) {
@@ -87,7 +93,10 @@ public class MinPathTest {
                 7,"[A, C, F, G, Z]");
     }
 }
-
+class Result {
+    int length;
+    String path;
+}
 class PathFinder {
     private List<Edge> edges = new ArrayList<>();
     private Set<String> nodeNames = new HashSet<>();
