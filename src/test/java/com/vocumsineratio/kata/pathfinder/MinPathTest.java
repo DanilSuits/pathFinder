@@ -21,33 +21,7 @@ public class MinPathTest {
 
     private void assertMinPath(String graph,
                                int length, String path) {
-        Result expected = new Result(length, path);
-
-        Result actual;
-        {
-            PathFinder pf = makePathFinder(graph);
-            actual = pf.findPath("A", "Z");
-        }
-
-        assertEquals(expected.length, actual.length);
-        assertEquals(expected.path, actual.path);
-    }
-
-    private PathFinder makePathFinder(String graph) {
-        LegacyPathFinder pf = new LegacyPathFinder();
-        Pattern edgePattern =
-                Pattern.compile("(\\D+)(\\d+)(\\D+)");
-        String[] edges = graph.split(",");
-        for (String edge : edges) {
-            Matcher matcher = edgePattern.matcher(edge);
-            if (matcher.matches()) {
-                String start = matcher.group(1);
-                int length = Integer.parseInt(matcher.group(2));
-                String end = matcher.group(3);
-                pf.addEdge(start, end, length);
-            }
-        }
-        return pf;
+        Adapter.assertMinPath(graph, length, path);
     }
 
     @Test
@@ -91,26 +65,41 @@ public class MinPathTest {
                 7,"[A, C, F, G, Z]");
     }
 }
-class Result {
-    public final int length;
-    public final String path;
+class Adapter {
+    static void assertMinPath(String graph,
+                  int length, String path) {
 
-    Result(int length, String path) {
-        this.length = length;
-        this.path = path;
+        PathFinder pf = makePathFinder(graph);
+
+        assertEquals(length, pf.getLength());
+        assertEquals(path, pf.getPath().toString());
+    }
+
+    static PathFinder makePathFinder(String graph) {
+        PathFinder pf = new PathFinder();
+        Pattern edgePattern =
+                Pattern.compile("(\\D+)(\\d+)(\\D+)");
+        String[] edges = graph.split(",");
+        for (String edge : edges) {
+            Matcher matcher = edgePattern.matcher(edge);
+            if (matcher.matches()) {
+                String start = matcher.group(1);
+                int length = Integer.parseInt(matcher.group(2));
+                String end = matcher.group(3);
+                pf.addEdge(start, end, length);
+            }
+        }
+        pf.findPath("A", "Z");
+        return pf;
     }
 }
-
-interface PathFinder {
-    Result findPath(String begin, String end);
-}
-class LegacyPathFinder implements PathFinder {
+class PathFinder {
     private List<Edge> edges = new ArrayList<>();
     private Set<String> nodeNames = new HashSet<>();
     private Map<String, Node> nodes = new HashMap<>();
     private Node endNode;
 
-    public Result findPath(String begin, String end) {
+    public void findPath(String begin, String end) {
         List<String> unvisited = initializeSearch(begin, end);
 
         for (String node = begin;
@@ -121,9 +110,6 @@ class LegacyPathFinder implements PathFinder {
         }
 
         setupEndNode(end);
-
-        return new Result(getLength()
-                , getPath().toString());
     }
 
     private List<String> initializeSearch(String begin,
