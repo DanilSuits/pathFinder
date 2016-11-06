@@ -24,6 +24,7 @@ public class MinPathTest {
         Result actual;
         {
             PathFinder pf = makePathFinder(graph);
+            pf.findPath("A", "Z");
             actual = pf.getResult();
         }
         if (length != null)
@@ -46,7 +47,6 @@ public class MinPathTest {
                 pf.addEdge(start, end, length);
             }
         }
-        pf.findPath("A", "Z");
         return pf;
     }
 
