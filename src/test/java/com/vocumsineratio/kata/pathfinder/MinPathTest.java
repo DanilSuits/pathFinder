@@ -21,14 +21,14 @@ public class MinPathTest {
 
     private void assertMinPath(String graph,
                                Integer length, String path) {
-        PathFinder pf = makePathFinder(graph);
+        Map sp = makePathFinder(graph);
         if (length != null)
-            assertEquals((int) length, pf.getLength());
+            assertEquals((int) length, sp.get("length"));
         if (path != null)
-            assertEquals(path, pf.getPath().toString());
+            assertEquals(path, sp.get("path"));
     }
 
-    private PathFinder makePathFinder(String graph) {
+    private Map makePathFinder(String graph) {
         PathFinder pf = new PathFinder();
         Pattern edgePattern =
                 Pattern.compile("(\\D+)(\\d+)(\\D+)");
@@ -43,7 +43,11 @@ public class MinPathTest {
             }
         }
         pf.findPath("A", "Z");
-        return pf;
+
+        Map shortestPath = new HashMap<>();
+        shortestPath.put("length", pf.getLength());
+        shortestPath.put("path", pf.getPath().toString());
+        return shortestPath;
     }
 
     @Test
